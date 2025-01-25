@@ -7,9 +7,16 @@ import { filterContent } from "../../utils/filterContent"
 
 export async function POST(request: NextRequest) {
   try {
+    console.log("Starting lyrics generation request...")
+    
     const openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
     })
+    
+    if (!process.env.OPENAI_API_KEY) {
+      console.error("OpenAI API key is not configured")
+      throw new Error("OpenAI API key is not configured")
+    }
 
     // Apply rate limiting
     await rateLimit()
@@ -56,6 +63,11 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ lyrics: filteredLyrics })
   } catch (error) {
+    console.error("Detailed error:", {
+      message: error instanceof Error ? error.message : "Unknown error",
+      stack: error instanceof Error ? error.stack : undefined,
+      type: error instanceof Error ? error.constructor.name : typeof error
+    })
     console.error("Error in POST /api/generate-lyrics:", error)
     if (error instanceof Error) {
       return NextResponse.json({ error: `Failed to generate lyrics: ${error.message}` }, { status: 500 })

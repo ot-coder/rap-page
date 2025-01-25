@@ -8,15 +8,28 @@ export default function Home() {
   const [lyrics, setLyrics] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
+  const [controller, setController] = useState<AbortController | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Cancel any pending request
+    if (controller) {
+      controller.abort()
+    }
+    
+    const newController = new AbortController()
+    setController(newController)
+    
     setIsLoading(true)
     setLyrics("")
     setError("")
     try {
       if (!input.trim()) {
         throw new Error("Please enter a concept or story")
+      }
+      if (input.length > 500) {
+        throw new Error("Input is too long. Please keep it under 500 characters")
       }
       const generatedLyrics = await generateLyrics(input)
       if (!generatedLyrics) {
