@@ -5,12 +5,12 @@ import { rateLimit } from "../../utils/rateLimit"
 import { sanitizeInput } from "../../utils/sanitizeInput"
 import { filterContent } from "../../utils/filterContent"
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
-
 export async function POST(request: NextRequest) {
   try {
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
+
     // Apply rate limiting
     await rateLimit()
 
