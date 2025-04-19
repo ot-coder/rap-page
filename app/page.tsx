@@ -12,15 +12,15 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     // Cancel any pending request
     if (controller) {
       controller.abort()
     }
-    
+
     const newController = new AbortController()
     setController(newController)
-    
+
     setIsLoading(true)
     setLyrics("")
     setError("")
@@ -49,12 +49,12 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-8">Rap & R&B Lyric Generator</h1>
+        <h1 className="text-3xl font-bold text-center mb-8 text-gray-100">Rap & R&B Lyric Generator</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="concept" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="concept" className="block text-sm font-medium text-gray-300">
               Enter your concept or story
             </label>
             <div className="mt-1">
@@ -62,7 +62,7 @@ export default function Home() {
                 id="concept"
                 name="concept"
                 rows={4}
-                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-600 rounded-md bg-gray-800 text-gray-100"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 required
@@ -72,18 +72,18 @@ export default function Home() {
           <div>
             <button
               type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-gray-900"
               disabled={isLoading}
             >
               {isLoading ? "Generating..." : "Generate Lyrics"}
             </button>
           </div>
         </form>
-        {error && <div className="mt-4 text-red-600">{error}</div>}
+        {error && <div className="mt-4 text-red-400">{error}</div>}
         {lyrics && (
           <div className="mt-8">
-            <h2 className="text-xl font-semibold mb-4">Generated Lyrics:</h2>
-            <pre className="bg-white shadow-sm p-4 rounded-md whitespace-pre-wrap">{lyrics}</pre>
+            <h2 className="text-xl font-semibold mb-4 text-gray-100">Generated Lyrics:</h2>
+            <pre className="bg-gray-800 shadow-sm p-4 rounded-md whitespace-pre-wrap text-gray-100 border border-gray-700">{lyrics}</pre>
           </div>
         )}
       </div>

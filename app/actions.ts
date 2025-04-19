@@ -24,7 +24,7 @@ export async function generateLyrics(concept: string) {
 
     // Generate lyrics
     const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4-turbo",
       messages: [
         {
           role: "system",
@@ -36,7 +36,7 @@ export async function generateLyrics(concept: string) {
           content: `Write rap or R&B lyrics based on this concept: ${sanitizedConcept}`,
         },
       ],
-      max_tokens: 300,
+      max_tokens: 500,
     })
 
     const generatedLyrics = response.choices[0]?.message?.content
