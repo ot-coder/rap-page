@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
 
     // Generate lyrics
     const response = await openai.chat.completions.create({
-      model: "gpt-5",
+      model: "gpt-5.2",
       messages: [
         {
           role: "system",
