@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { generateLyrics } from "./actions"
+const GENERATE_LYRICS_ENDPOINT = "/api/generate-lyrics"
 
 export default function Home() {
   const [input, setInput] = useState("")
@@ -31,10 +31,30 @@ export default function Home() {
       if (input.length > 500) {
         throw new Error("Input is too long. Please keep it under 500 characters")
       }
-      const generatedLyrics = await generateLyrics(input)
-      if (!generatedLyrics) {
+      const response = await fetch(GENERATE_LYRICS_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ concept: input }),
+        signal: newController.signal,
+      })
+
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({}))
+        const message =
+          typeof errorBody?.error === "string"
+            ? errorBody.error
+            : "Failed to generate lyrics. Please try again."
+        throw new Error(message)
+      }
+
+      const { lyrics: generatedLyrics } = await response.json()
+
+      if (!generatedLyrics || typeof generatedLyrics !== "string") {
         throw new Error("No lyrics were generated")
       }
+
       setLyrics(generatedLyrics)
     } catch (error) {
       console.error("Error in handleSubmit:", error)
